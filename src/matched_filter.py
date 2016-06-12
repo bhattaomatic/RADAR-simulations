@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import numpy as np
 import matplotlib.pyplot as plt
+import math 
 
 
 fc = 1			# Center frequency of operation
 T = 100			# Sampling Frequency
-t = np.linspace(0,50,T) # Time from start to stop
+t = np.linspace(0,100,T*20) # Time from start to stop
 s = 10e3 		# Distance between the base station and mobile station (m)
 d = np.arange(1,s)	# Point where the reflected path signal hits the ground (m)
 hb = 20			# Height of base station (m)
@@ -18,14 +19,17 @@ td = 1			# Time taken by the signal to travel direct path (s)
 tr = 10			# Time taken by the signal to travel reflected path (s)
 
 w = 2 * np.pi * fc
-x = np.sin(2 * np.pi * fc * t)	# Transmitted signal
+#w = math.radians(w1)
+x = np.sin(w * t)	# Transmitted signal
 #plt.plot(t,x)
 
 y = np.sin(w*(t-td)) + np.sin(w*(t-tr))
 #plt.plot(t,y)
+#plt.show()
 
-h = np.sin(2*np.pi*(T-t)) 	# Response of the Matched Filter
+h = np.sin(w*(T-t)) 	# Response of the Matched Filter
 #plt.plot(t,h)
+#plt.show()
 
 z = np.convolve(y,h)		# Matched Filter output
 #print z.shape
@@ -44,11 +48,11 @@ sint = np.sin(w*t)
 sintd = np.sin(w*td)
 sintr = np.sin(w*tr)
 
-print cosT, costd, costr
+print 'cosT', cosT, 'costd', costd, 'costr', costr
 #plt.plot(cost, label='cost')
 #plt.show()
 
-print sinT, sintd, sintr
+print 'sinT', sinT, 'sintd', sintd, 'sintr', sintr
 #plt.plot(sint, label='sint')
 #plt.legend()
 #plt.show()
@@ -89,8 +93,8 @@ plt.plot(part3, label = 'part3')
 plt.legend()
 plt.show()
 '''
-z_calc = (part1)
-#z_calc = (part1 + part2 + part3)
+#z_calc = (part1)
+z_calc = (part1 + part2 + part3)
 plt.plot(z_calc, label='calculated')
 plt.legend()
 plt.show()
